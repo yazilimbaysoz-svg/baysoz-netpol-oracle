@@ -1,0 +1,55 @@
+# Baysöz Labs <baysozlabs@proton.me> — offline Kubernetes NetworkPolicy reachability oracle.
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "baysoz-netpol-oracle"
+version = "1.0.0"
+description = "Offline Kubernetes NetworkPolicy reachability oracle and SARIF CI gate - Baysöz Labs <baysozlabs@proton.me>"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "Baysöz Labs", email = "baysozlabs@proton.me" }]
+maintainers = [{ name = "Baysöz Labs", email = "baysozlabs@proton.me" }]
+requires-python = ">=3.13"
+dependencies = ["PyYAML>=6.0.2,<7"]
+keywords = [
+  "kubernetes",
+  "networkpolicy",
+  "devops-platform",
+  "security",
+  "reachability",
+  "sarif",
+  "ci-gate",
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: System Administrators",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Security",
+  "Topic :: Software Development :: Quality Assurance",
+]
+
+[project.urls]
+Homepage = "https://github.com/yazilimbaysoz-svg/baysoz-netpol-oracle"
+Issues = "https://github.com/yazilimbaysoz-svg/baysoz-netpol-oracle/issues"
+
+[project.scripts]
+netpol-oracle = "baysoz_netpol_oracle.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/baysoz_netpol_oracle"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py313"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

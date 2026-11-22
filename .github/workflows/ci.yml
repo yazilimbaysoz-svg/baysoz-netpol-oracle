@@ -1,0 +1,49 @@
+# Baysöz Labs <baysozlabs@proton.me> — CI for baysoz-netpol-oracle
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.13"
+
+      - name: Install uv and analysis tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install uv ruff semgrep
+
+      - name: Create environment and install project
+        run: |
+          uv venv
+          uv pip install -e .
+          uv pip install pytest
+
+      - name: Unit and integration tests
+        run: uv run pytest -q
+
+      - name: Lint and static analysis
+        run: ruff check --select E,F,W,S,B .
+
+      - name: Security analysis
+        run: semgrep --config p/default --error .
+
+      - name: Attribution check
+        run: uv run netpol-oracle --version
+
+# Maintained by Baysöz Labs <baysozlabs@proton.me>
